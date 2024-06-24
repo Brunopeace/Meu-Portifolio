@@ -20,23 +20,34 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #000;
+            background-color: #000000;
             color: #fff;
             font-family: Arial, sans-serif;
         }
 
         canvas {
             border: 1px solid #fff;
+            background-color: #000000;
         }
 
         #score {
             font-size: 1.5em;
             margin-bottom: 10px;
-            color: #ff0e05; /* Cor do texto "Pontuação:" */
+            color: #ff0e05;
         }
 
         #score span {
-            color: #f9ff05; /* Nova cor do número da pontuação */
+            color: #f9ff05;
+        }
+
+        #bestScore {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #ff0e05;
+        }
+
+        #bestScore span {
+            color: #f9ff05;
         }
 
         #restartButton {
@@ -55,19 +66,25 @@
     <h1>LUCAS</h1>
     <h2>Jogo da Cobrinha</h2>
     <div id="score">Pontuação: <span id="scoreNumber">0</span></div>
+    <div id="bestScore">Melhor Pontuação: <span id="bestScoreNumber">0</span></div>
     <canvas id="gameCanvas"></canvas>
     <button id="restartButton">Reiniciar Jogo</button>
+    <audio id="eatSound" src="mp3/eat.mp3"></audio>
+    <audio id="collisionSound" src="mp3/collision.mp3"></audio>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const canvas = document.getElementById("gameCanvas");
             const ctx = canvas.getContext("2d");
-            const scoreDisplay = document.getElementById("scoreNumber"); // Seleciona o elemento span com o número da pontuação
+            const scoreDisplay = document.getElementById("scoreNumber");
+            const bestScoreDisplay = document.getElementById("bestScoreNumber");
             const restartButton = document.getElementById("restartButton");
+            const eatSound = document.getElementById("eatSound");
+            const collisionSound = document.getElementById("collisionSound");
 
-            const gridSize = 20;
-            let tileSize = 20;
-            let canvasSize = 400;
+            const gridSize = 15;
+            let tileSize = 30; // Tamanho dos tiles aumentado para melhor visualização
+            let canvasSize = gridSize * tileSize;
 
             if (window.innerWidth < 400) {
                 tileSize = Math.floor(window.innerWidth / gridSize);
@@ -77,20 +94,29 @@
             canvas.width = canvasSize;
             canvas.height = canvasSize;
 
-            let snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }]; // Inicializa a cobra com três segmentos
-            let direction = { x: 1, y: 0 }; // Direção inicial: para a direita
+            let snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+            let direction = { x: 1, y: 0 };
             let nextDirection = { x: 1, y: 0 };
-            let food = { x: -1, y: -1 }; // Posição inicial da fruta, inválida
+            let food = { x: -1, y: -1 };
             let score = 0;
-            let speed = 150; // Intervalo de tempo inicial (quanto menor, mais rápida a cobra)
+            let speed = 150; // Velocidade constante de 150 milissegundos
             let touchStartX = 0;
             let touchStartY = 0;
             let gameStarted = false;
             let gameOver = false;
+            let fruitsEaten = 0;
+            let showHeadEffect = false;
+            let mouthOpen = false;
 
-            // Carrega a imagem da fruta
             const fruitImage = new Image();
-            fruitImage.src = 'fruit.png';
+            fruitImage.src = 'img/fruit.png'; // Substitua pelo caminho da imagem do alimento
+
+            const backgroundImage = new Image();
+            backgroundImage.src = 'img/background.png'; // Substitua pelo caminho da imagem de fundo
+
+            // Recuperar a melhor pontuação do localStorage
+            let bestScore = localStorage.getItem('bestScore') || 0;
+            bestScoreDisplay.textContent = bestScore;
 
             function startGame() {
                 gameOver = false;
@@ -100,50 +126,130 @@
             }
 
             function gameLoop() {
-                setTimeout(function() {
+                if (gameOver) return;
+                setTimeout(() => {
                     moveSnake();
                     if (checkCollision()) {
+                        collisionSound.play();
                         gameOver = true;
+                        // Atualizar a melhor pontuação, se necessário
+                        if (score > bestScore) {
+                            bestScore = score;
+                            localStorage.setItem('bestScore', bestScore);
+                            bestScoreDisplay.textContent = bestScore;
+                        }
+                        drawGameOver(); // Chama a função para desenhar "Game Over"
                         restartButton.style.display = "block";
                     } else {
                         draw();
-                        if (!gameOver) {
-                            gameLoop();
-                        }
+                        requestAnimationFrame(gameLoop);
                     }
                 }, speed);
             }
 
             function drawSnake() {
                 snake.forEach((segment, index) => {
-                    ctx.fillStyle = index === 0 ? "darkgreen" : "green";
-                    ctx.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
-
-                    // Adiciona olhos para o segmento da cabeça
                     if (index === 0) {
-                        ctx.fillStyle = "#fff";
-                        ctx.fillRect(segment.x * tileSize + tileSize * 0.3, segment.y * tileSize + tileSize * 0.3, tileSize * 0.1, tileSize * 0.1);
-                        ctx.fillRect(segment.x * tileSize + tileSize * 0.7, segment.y * tileSize + tileSize * 0.3, tileSize * 0.1, tileSize * 0.1);
-
-                        // Adiciona uma língua para a cobra
-                        ctx.beginPath();
-                        ctx.moveTo(segment.x * tileSize + tileSize * 0.35, segment.y * tileSize + tileSize * 0.6);
-                        ctx.quadraticCurveTo(segment.x * tileSize + tileSize * 0.5, segment.y * tileSize + tileSize * 0.8, segment.x * tileSize + tileSize * 0.65, segment.y * tileSize + tileSize * 0.6);
-                        ctx.strokeStyle = "red";
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
+                        drawSnakeHead(segment);
+                    } else {
+                        // Cor do corpo da cobra
+                        const hue = (index * 20) % 360; // Variação de cores
+                        const color = `hsl(${hue}, 70%, 50%)`;
+                        drawSnakeSegment(segment, color);
                     }
                 });
+            }
+
+            function drawSnakeSegment(segment, color) {
+                ctx.beginPath();
+                ctx.rect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.strokeStyle = "#fff"; // Cor da borda
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            function drawSnakeHead(segment) {
+                ctx.beginPath();
+                ctx.rect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
+                ctx.fillStyle = "#4CAF50"; // Cor da cabeça da cobra
+                ctx.fill();
+                ctx.strokeStyle = "#388E3C"; // Cor da borda da cabeça da cobra
+                ctx.stroke();
+
+                // Desenhar os olhos
+                const eyeSize = tileSize * 0.15;
+                const eyeOffsetX = tileSize * 0.25;
+                const eyeOffsetY = tileSize * 0.25;
+                ctx.fillStyle = "#000000"; // Cor dos olhos
+
+                // Olho esquerdo
+                ctx.beginPath();
+                ctx.arc(segment.x * tileSize + eyeOffsetX, segment.y * tileSize + eyeOffsetY, eyeSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Olho direito
+                ctx.beginPath();
+                ctx.arc(segment.x * tileSize + tileSize - eyeOffsetX, segment.y * tileSize + eyeOffsetY, eyeSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Desenhar a boca
+                const mouthWidth = tileSize * 0.5;
+                const mouthHeight = tileSize * 0.2;
+                const mouthOffsetY = tileSize * 0.6;
+                ctx.fillStyle = "#FF0000"; // Cor da boca
+
+                if (mouthOpen) {
+                    ctx.fillRect(segment.x * tileSize + tileSize / 2 - mouthWidth / 2, segment.y * tileSize + mouthOffsetY, mouthWidth, mouthHeight);
+
+                    // Desenhar os dentes
+                    const toothWidth = mouthWidth * 0.2;
+                    const toothHeight = mouthHeight * 0.5;
+                    ctx.fillStyle = "#FFFFFF"; // Cor dos dentes
+                    ctx.fillRect(segment.x * tileSize + tileSize / 2 - mouthWidth / 2, segment.y * tileSize + mouthOffsetY, toothWidth, toothHeight);
+                    ctx.fillRect(segment.x * tileSize + tileSize / 2 + mouthWidth / 2 - toothWidth, segment.y * tileSize + mouthOffsetY, toothWidth, toothHeight);
+                } else {
+                    ctx.fillRect(segment.x * tileSize + tileSize / 2 - mouthWidth / 2, segment.y * tileSize + mouthOffsetY, mouthWidth, mouthHeight / 2);
+                }
             }
 
             function drawFood() {
                 ctx.drawImage(fruitImage, food.x * tileSize, food.y * tileSize, tileSize, tileSize);
             }
 
+            function drawBackground() {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+
             function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawSnake();
-                drawFood();
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+                drawBackground(); // Desenha o plano de fundo
+                drawSnake(); // Desenha a cobra
+                drawFood(); // Desenha o alimento
+
+                if (showHeadEffect) {
+                    drawHeadEffect();
+                }
+            }
+
+            function drawHeadEffect() {
+                const particleCount = 10;
+                const particleSize = 3;
+                const colors = ['# const colors = ['#4CAF50', '#FFC107', '#2196F3']; // Cores para as partículas
+                const head = snake[0];
+
+                for (let i = 0; i < particleCount; i++) {
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const x = head.x * tileSize + tileSize / 2 + Math.random() * 10 - 5;
+                    const y = head.y * tileSize + tileSize / 2 + Math.random() * 10 - 5;
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, particleSize, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
             }
 
             function moveSnake() {
@@ -158,16 +264,26 @@
 
                 snake.unshift(head);
 
-                // Check if snake has eaten the food
                 if (head.x === food.x && head.y === food.y) {
                     score++;
-                    speed = Math.max(50, speed - 2); // Increase speed as the score increases
+                    fruitsEaten++;
+                    eatSound.play();
+                    if (fruitsEaten % 10 === 0) {
+                        showHeadEffect = true;
+                        setTimeout(() => {
+                            showHeadEffect = false;
+                        }, 1000); // Efeito da cabeça por 1 segundo
+                    }
+                    mouthOpen = true;
+                    setTimeout(() => {
+                        mouthOpen = false;
+                    }, 200); // Duração da boca aberta
                     placeFood();
                 } else {
                     snake.pop();
                 }
 
-                scoreDisplay.textContent = score; // Atualiza o número da pontuação exibido
+                scoreDisplay.textContent = score;
             }
 
             function placeFood() {
@@ -184,7 +300,6 @@
 
             function checkCollision() {
                 const head = snake[0];
-                // Check collision with walls or itself
                 return (
                     head.x < 0 || head.x >= gridSize ||
                     head.y < 0 || head.y >= gridSize ||
@@ -193,13 +308,22 @@
             }
 
             function resetGame() {
-                snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }]; // Cobra inicial com três segmentos
-                direction = { x: 1, y: 0 }; // Começando indo para a direita
+                snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+                direction = { x: 1, y: 0 };
                 nextDirection = { x: 1, y: 0 };
                 score = 0;
-                speed = 150; // Intervalo inicial de tempo (quanto menor, mais rápida a cobrinha)
-                scoreDisplay.textContent = score; // Atualiza o número da pontuação exibido
+                scoreDisplay.textContent = score;
+                fruitsEaten = 0; // Reinicia o contador de frutas comidas
+                speed = 150; // Reinicia a velocidade
                 gameStarted = false;
+                showHeadEffect = false; // Reinicia o flag de efeito na cabeça
+            }
+
+            function drawGameOver() {
+                ctx.font = "40px Arial";
+                ctx.fillStyle = "#ffffff";
+                ctx.textAlign = "center";
+                ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
             }
 
             function handleTouchStart(event) {
@@ -209,7 +333,7 @@
             }
 
             function handleTouchMove(event) {
-                event.preventDefault(); // Previne o scroll durante o toque
+                event.preventDefault();
                 const touch = event.touches[0];
                 const touchEndX = touch.clientX;
                 const touchEndY = touch.clientY;
@@ -242,7 +366,25 @@
                 startGame();
             });
 
-            startGame(); // Inicia o jogo quando a página carrega
+            // Adicionando controle por teclado para melhorar a jogabilidade
+            document.addEventListener("keydown", function(event) {
+                switch (event.key) {
+                    case "ArrowUp":
+                        if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
+                        break;
+                    case "ArrowDown":
+                        if (direction.y !== -1) nextDirection = { x: 0, y: 1 };
+                        break;
+                    case "ArrowLeft":
+                        if (direction.x !== 1) nextDirection = { x: -1, y: 0 };
+                        break;
+                    case "ArrowRight":
+                        if (direction.x !== -1) nextDirection = { x: 1, y: 0 };
+                        break;
+                }
+            });
+
+            startGame();
         });
     </script>
 </body>
