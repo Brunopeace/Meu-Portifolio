@@ -109,10 +109,10 @@
             let mouthOpen = false;
 
             const fruitImage = new Image();
-            fruitImage.src = 'img/fruit.png'; // Substitua pelo caminho da imagem do alimento
+            fruitImage.src = 'https://i.ibb.co/Cnwb4h9/fruit.png'; // Substitua pelo caminho da imagem do alimento
 
             const backgroundImage = new Image();
-            backgroundImage.src = 'img/background.png'; // Substitua pelo caminho da imagem de fundo
+            backgroundImage.src = 'https://i.ibb.co/KxfG8T2/background.png'; // Substitua pelo caminho da imagem de fundo
 
             // Recuperar a melhor pontuação do localStorage
             let bestScore = localStorage.getItem('bestScore') || 0;
@@ -202,12 +202,15 @@
 
                 if (mouthOpen) {
                     ctx.fillRect(segment.x * tileSize + tileSize / 2 - mouthWidth / 2, segment.y * tileSize + mouthOffsetY, mouthWidth, mouthHeight);
-
-                    // Desenhar os dentes
+                    // Desenhar dentes
+                    ctx.fillStyle = "#FFFFFF"; // Cor dos dentes
                     const toothWidth = mouthWidth * 0.2;
                     const toothHeight = mouthHeight * 0.5;
-                    ctx.fillStyle = "#FFFFFF"; // Cor dos dentes
+
+                    // Dente esquerdo
                     ctx.fillRect(segment.x * tileSize + tileSize / 2 - mouthWidth / 2, segment.y * tileSize + mouthOffsetY, toothWidth, toothHeight);
+
+                    // Dente direito
                     ctx.fillRect(segment.x * tileSize + tileSize / 2 + mouthWidth / 2 - toothWidth, segment.y * tileSize + mouthOffsetY, toothWidth, toothHeight);
                 } else {
                     ctx.fillRect(segment.x * tileSize + tileSize / 2 - mouthWidth / 2, segment.y * tileSize + mouthOffsetY, mouthWidth, mouthHeight / 2);
@@ -236,7 +239,7 @@
             function drawHeadEffect() {
                 const particleCount = 10;
                 const particleSize = 3;
-                const colors = ['# const colors = ['#4CAF50', '#FFC107', '#2196F3']; // Cores para as partículas
+                const colors = ['#4CAF50', '#FFC107', '#2196F3']; // Cores para as partículas
                 const head = snake[0];
 
                 for (let i = 0; i < particleCount; i++) {
