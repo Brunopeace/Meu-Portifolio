@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://i.ibb.co/KxfG8T2/background.png">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStkNwZtkUS5a_G1LI516DxkocS2YGxMAB5OM4-yaZHokeJ-q5vfO8h6u0&s=10">
     <title>Jogo da Cobrinha</title>
-    <style>
+    
+</head>
+<style>
         h1 {
             color: #0cfe09;
         }
@@ -62,7 +64,6 @@
             cursor: pointer;
         }
     </style>
-</head>
 <body>
     <h1>LUCAS</h1>
     <h2>Jogo da Cobrinha</h2>
@@ -95,7 +96,13 @@
             canvas.width = canvasSize;
             canvas.height = canvasSize;
 
-            let snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+            const initialPosition = Math.floor(gridSize / 2);
+
+            let snake = [
+                { x: initialPosition, y: initialPosition }, 
+                { x: initialPosition - 1, y: initialPosition }, 
+                { x: initialPosition - 2, y: initialPosition }
+            ];
             let direction = { x: 1, y: 0 };
             let nextDirection = { x: 1, y: 0 };
             let food = { x: -1, y: -1 };
@@ -312,7 +319,12 @@
             }
 
             function resetGame() {
-                snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+                const initialPosition = Math.floor(gridSize / 2);
+                snake = [
+                    { x: initialPosition, y: initialPosition }, 
+                    { x: initialPosition - 1, y: initialPosition }, 
+                    { x: initialPosition - 2, y: initialPosition }
+                ];
                 direction = { x: 1, y: 0 };
                 nextDirection = { x: 1, y: 0 };
                 score = 0;
