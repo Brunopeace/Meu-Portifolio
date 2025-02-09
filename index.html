@@ -1,18 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clear LocalStorage</title>
-    <script>
-        function clearLocalStorage() {
-            localStorage.clear();
-            alert("LocalStorage limpo. Recarregando a página...");
-            window.location.reload();
-        }
-    </script>
-</head>
-<body>
-    <button onclick="clearLocalStorage()">Limpar LocalStorage</button>
-</body>
-</html>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-analytics.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCWa-2lnSJ8TDIKglrOH4NvGTQAyKyZJMo",
+    authDomain: "store-apps-d8b9c.firebaseapp.com",
+    projectId: "store-apps-d8b9c",
+    storageBucket: "store-apps-d8b9c.firebasestorage.app",
+    messagingSenderId: "52036242696",
+    appId: "1:52036242696:web:77852649b86ccbfdc2f0bd",
+    measurementId: "G-DG9PLDQTQ2"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+  // Initialize Firestore
+  const db = getFirestore(app);
+
+  // Test if Firestore is working
+  async function testFirestore() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "testCollection"));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    } catch (error) {
+      console.error("Error getting documents: ", error);
+    }
+  }
+
+  // Call the test function
+  testFirestore();
+</script>
