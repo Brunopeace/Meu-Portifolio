@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transmitir para TV</title>
-    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+    <script src="https://www.gstatic.com/cast/sdk/libs/caf_sender/v3/cast_sender.js"></script>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
         video { width: 80%; max-width: 600px; margin-top: 20px; }
@@ -22,19 +22,14 @@
     </video>
 
     <script>
-        let castSession = null;
-        let videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // URL do vídeo a ser transmitido
+        let castContext;
+        let castSession;
+        let videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // URL do vídeo
 
-        // Inicializa o Google Cast API
-        window['__onGCastApiAvailable'] = function(isAvailable) {
-            if (isAvailable) {
-                initializeCastApi();
-            }
-        };
-
+        // Função para inicializar o Google Cast
         function initializeCastApi() {
-            const context = cast.framework.CastContext.getInstance();
-            context.setOptions({
+            castContext = cast.framework.CastContext.getInstance();
+            castContext.setOptions({
                 receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
                 autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
             });
@@ -43,11 +38,10 @@
         }
 
         function launchCast() {
-            let context = cast.framework.CastContext.getInstance();
-            castSession = context.getCurrentSession();
+            castSession = castContext.getCurrentSession();
 
             if (!castSession) {
-                context.requestSession().then(() => {
+                castContext.requestSession().then(() => {
                     sendVideoToTV();
                 }).catch(error => console.log("Erro ao iniciar sessão de Cast:", error));
             } else {
@@ -65,6 +59,15 @@
                 console.log("Transmissão iniciada!");
             }).catch(error => console.log("Erro ao transmitir:", error));
         }
+
+        // Aguarda a API do Google Cast estar pronta antes de iniciar
+        window['__onGCastApiAvailable'] = function(isAvailable) {
+            if (isAvailable) {
+                initializeCastApi();
+            } else {
+                console.log("API Google Cast não está disponível.");
+            }
+        };
     </script>
 </body>
 </html>
