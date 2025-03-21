@@ -1,39 +1,70 @@
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-analytics.js";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmitir para TV</title>
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        video { width: 80%; max-width: 600px; margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Transmitir Vídeo para TV</h1>
+    
+    <button id="castButton">Transmitir</button>
+    <br><br>
+    <video id="videoPlayer" controls>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos.
+    </video>
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCWa-2lnSJ8TDIKglrOH4NvGTQAyKyZJMo",
-    authDomain: "store-apps-d8b9c.firebaseapp.com",
-    projectId: "store-apps-d8b9c",
-    storageBucket: "store-apps-d8b9c.firebasestorage.app",
-    messagingSenderId: "52036242696",
-    appId: "1:52036242696:web:77852649b86ccbfdc2f0bd",
-    measurementId: "G-DG9PLDQTQ2"
-  };
+    <script>
+        let castSession = null;
+        let videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // URL do vídeo a ser transmitido
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+        // Inicializa o Google Cast API
+        window['__onGCastApiAvailable'] = function(isAvailable) {
+            if (isAvailable) {
+                initializeCastApi();
+            }
+        };
 
-  // Initialize Firestore
-  const db = getFirestore(app);
+        function initializeCastApi() {
+            const context = cast.framework.CastContext.getInstance();
+            context.setOptions({
+                receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+                autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+            });
 
-  // Test if Firestore is working
-  async function testFirestore() {
-    try {
-      const querySnapshot = await getDocs(collection(db, "testCollection"));
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-      });
-    } catch (error) {
-      console.error("Error getting documents: ", error);
-    }
-  }
+            document.getElementById("castButton").addEventListener("click", launchCast);
+        }
 
-  // Call the test function
-  testFirestore();
-</script>
+        function launchCast() {
+            let context = cast.framework.CastContext.getInstance();
+            castSession = context.getCurrentSession();
+
+            if (!castSession) {
+                context.requestSession().then(() => {
+                    sendVideoToTV();
+                }).catch(error => console.log("Erro ao iniciar sessão de Cast:", error));
+            } else {
+                sendVideoToTV();
+            }
+        }
+
+        function sendVideoToTV() {
+            if (!castSession) return;
+
+            let mediaInfo = new chrome.cast.media.MediaInfo(videoUrl, "video/mp4");
+            let request = new chrome.cast.media.LoadRequest(mediaInfo);
+
+            castSession.loadMedia(request).then(() => {
+                console.log("Transmissão iniciada!");
+            }).catch(error => console.log("Erro ao transmitir:", error));
+        }
+    </script>
+</body>
+</html>
