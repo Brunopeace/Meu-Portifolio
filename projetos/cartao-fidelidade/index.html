@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cliente</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2196f3">
+  <script type="module" src="js/scripts.js"></script>
+</head>
+<body>
+    
+  <div id="splash">
+    <div class="splash-content">
+      <img src="icons/logo.png" alt="Logo" class="splash-logo">
+      <h1 class="splash-title">Fideliza</h1>
+    </div>
+  </div>
+    
+  <div class="container">
+<img src="icons/icon-512.png" alt="Logo" class="logo-cliente" />
+    <h2>Consulte seu Cartão</h2>
+    <input type="text" id="buscarNome" placeholder="Digite seu nome de usuário">
+    <button class="buscarNome" onclick="buscarCliente()">Ver meus selos</button>
+
+    <div id="cartaoFidelidade" style="display:none;">
+      <h3 id="nomeCliente"></h3>
+      <div class="selos" id="areaSelos"></div>
+      <p id="infoIndicacao" style="margin-top: 10px;"></p>
+      <hr>
+    </div>
+
+    <!-- Botão ADM -->
+<button onclick="abrirModalADM()" class="botao-adm">ADM</button>
+
+<!-- Modal para senha do ADM -->
+<div id="modalADM" class="modal">
+  <div class="modal-conteudo">
+    <!-- Botão X para fechar -->
+    <span class="fechar-modal" onclick="fecharModalADM()">✖</span>
+
+    <!-- Logo -->
+    <img src="icons/icon-512.png" alt="Logo" class="logo-modal" />
+    
+    <h2>Acesso Administrativo</h2>
+    <input type="password" id="senhaADM" placeholder="Digite a senha">
+    <div class="botoes">
+<button onclick="verificarSenhaADM()">Entrar</button>
+    </div>
+    <p id="erroSenha" class="mensagem-erro"><span>⚠️</span> Você não está autorizado pra isso.</p>
+  </div>
+</div>
+
+    <button id="btnInstalar" style="display: none;">Instalar App</button>
+  </div>
+
+  <!-- Modal por indicação -->
+  <div class="modal-indicacao" id="modalIndicacao">
+    <div class="modal-conteudo">
+      <span class="fechar" id="fecharModal">&times;</span>
+      <h2>Parabéns!</h2>
+      <p id="mensagemIndicacao">Você indicou 2 pessoas e ganhou <strong>1 mês grátis!</strong></p>
+      <a href="https://wa.me/5581982258462?text=Olá!%20Quero%20resgatar%20meu%20%20Premium%20grátis%20ao%20indicar%202%20pessoas%20%20%20." 
+         target="_blank" 
+         class="btn-whatsapp">
+        Resgatar via WhatsApp
+      </a>
+    </div>
+  </div>
+  
+  <!-- Modal para 3 selos -->
+  <div class="modal-indicacao" id="modal3Selos">
+    <div class="modal-conteudo">
+      <span class="fechar" onclick="fecharModal('modal3Selos')">&times;</span>
+      <h2>Parabéns!</h2>
+      <p>Você renovou por 3 meses e ganhou <strong>1 mês grátis!</strong></p>
+      <a href="https://wa.me/5581982258462?text=Olá!%20Quero%20resgatar%20meu%20%20Premium%20grátis%20que%20ganhei%20ao%20renovar%20por%203%20meses." 
+         target="_blank" 
+         class="btn-whatsapp">
+        Resgatar via WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal para 6 selos -->
+  <div class="modal-indicacao" id="modal6Selos">
+    <div class="modal-conteudo">
+      <span class="fechar" onclick="fecharModal('modal6Selos')">&times;</span>
+      <h2>Parabéns!</h2>
+      <p>Você renovou por 6 meses e ganhou <strong>2 meses grátis!</strong></p>
+      <a href="https://wa.me/5581982258462?text=Olá!%20Quero%20resgatar%20meu%20%20Premium%20grátis%20que%20ganhei%20ao%20renovar%20por%206%20meses." 
+         target="_blank" 
+         class="btn-whatsapp">
+        Resgatar via WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal para 10 selos -->
+  <div class="modal-indicacao" id="modal10Selos">
+    <div class="modal-conteudo">
+      <span class="fechar" onclick="fecharModal('modal10Selos')">&times;</span>
+      <h2>Parabéns!</h2>
+      <p>Você completou todos os selos e ganhou <strong>3 meses grátis!</strong></p>
+      <a href="https://wa.me/5581982258462?text=Olá!%20Quero%20resgatar%20meu%20%20Premium%20grátis%20que%20ganhei%20ao%20Completar%20todos%20os%20selos." 
+         target="_blank" 
+         class="btn-whatsapp">
+        Resgatar via WhatsApp
+      </a>
+    </div>
+  </div>
+ 
+</body>
+</html>

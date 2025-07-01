@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin</title>
+  <link rel="stylesheet" href="css/adm.css">
+  <script type="module" src="js/admin.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Administrador</h2>
+    <button onclick="voltarPaginaAnterior()" class="botao-voltar">Voltar</button>
+    <div class="section">
+      <h3>Cadastrar Cliente</h3>
+      <input type="text" id="nomeCliente" placeholder="Nome do cliente">
+      <input type="number" id="qtdSelos" placeholder="Quantidade de selos (0 a 10)" min="0" max="10">
+      <input type="number" id="qtdIndicacoes" placeholder="Indicações (0 ou mais)" min="0">
+      <button onclick="adicionarCliente()">Salvar Cliente</button>
+    </div>
+
+    <div class="section">
+    <button onclick="abrirModalEditar()">Menu</button>
+    </div>
+
+  <!-- Modal de edição -->
+  <div id="modalEditar" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModalEditar()">&times;</span>
+      <h3>Editar Selos e Indicações</h3>
+      <input type="text" id="nomeEditar" placeholder="Nome do cliente">
+      <input type="number" id="novoValorSelos" placeholder="Novo número de selos (0 a 10)" min="0" max="10">
+      <input type="number" id="novoValorIndicacoes" placeholder="Novo número de indicações" min="0">
+      <button onclick="editarSelos()">Atualizar Cliente</button>
+
+      <h3>Excluir Cliente</h3>
+      <input type="text" id="nomeExcluir" placeholder="Nome do cliente">
+  <button onclick="excluirCliente()">Excluir</button>     
+      
+      <h3>Marcar como Premium Entregue</h3>
+<input type="text" id="nomePremium" placeholder="Nome do cliente">
+<button onclick="marcarPremiumEntregue()">Marcar como Entregue</button>
+     
+     <div class="section">
+      <h3>Clientes Cadastrados</h3>
+      <input type="text" id="buscaCliente" placeholder="Buscar cliente..." oninput="filtrarClientes()" />
+      <div class="lista-clientes" id="listaClientes"></div>
+    </div>
+
+    <div class="section">
+      <h3>Fazer Backup</h3>
+      <button onclick="exportarBackup()">Fazer Backup</button>
+      <h3>Importar Backup</h3>
+      <input type="file" id="importarArquivo" accept=".json" onchange="importarBackup()" style="margin-top: 10px;">
+    </div>
+  </div>      
+      
+    </div>
+  </div>
+</body>
+</html>

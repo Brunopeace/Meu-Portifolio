@@ -1,0 +1,170 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+    color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #1e1e1e;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    max-width: 600px;
+    transition: transform 0.3s ease;
+}
+
+.container:hover {
+    transform: scale(1.01);
+}
+
+footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+}
+
+a {
+    color: #FFD700;
+    text-decoration: underline;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+input[type="text"], input[type="date"], button {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="date"]:focus {
+    border-color: #4CAF50;
+    background-color: #333;
+}
+
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #008CBA;
+    transform: scale(1.05);
+}
+
+#studyList {
+    max-height: 300px; /* ou qualquer altura que funcione bem no seu layout */
+    overflow-y: auto;
+    margin-top: 10px;
+    padding: 10px;
+    
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.task {
+    background-color: #2d2d2d;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.task:hover {
+    transform: scale(1.02);
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #008CBA;
+    transform: scale(1.05);
+}
+
+#feedback.success {
+    color: #4CAF50;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#feedback.error {
+    color: #FF5252;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1, h2 {
+        font-size: 22px;
+    }
+
+    input[type="text"], input[type="date"], button {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .task {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .delete-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    #studyList {
+        max-height: 200px;
+    }
+}
