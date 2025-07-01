@@ -1,0 +1,591 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #1a252f, #3a6073);
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    text-align: center;
+    
+}
+
+.pontuacoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 92%;
+    margin-bottom: 2%;
+}
+
+/* Estilização da medalha  */
+.nome-medalha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 140px;
+    max-width: 250px;
+    white-space: nowrap;
+}
+
+.medal {
+    font-size: 23px;
+    flex-shrink: 0;
+    width: 25px;
+    text-align: center;
+}
+
+.meu-score td {
+    background-color: rgba(255, 255, 0, 0.3) !important;
+    font-weight: bold;
+    color: black;
+}
+
+/* 🔹 Estilização do modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔹 Estilo do conteúdo do modal */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 🔹 Input do nome */
+#playerNameInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* 🔹 Botão de confirmação */
+#confirmNameButton {
+    background: #ffcc00;
+    color: #000;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#confirmNameButton:hover {
+    background: #ffaa00;
+}
+
+#rankingContainer {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    width: 90%;
+    max-width: 600px; /* Define um limite para telas maiores */
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 143px; /* 🔹 Define uma altura fixa */
+    overflow-y: auto; /* 🔹 Adiciona a barra de rolagem vertical */
+    
+}
+
+/* 📌 Estilização do título do ranking */
+#rankingContainer h2 {
+    font-size: 18px;
+    color: #ffcc00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+    margin-bottom: 10px;
+}
+
+/* 📌 Faz a tabela ocupar 92% do container */
+#rankingTable {
+
+    width: 92%;
+    border-collapse: collapse;
+    font-size: 16px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+/* 📌 Ajuste das células da tabela */
+#rankingTable th, #rankingTable td {
+    font-size: 10px;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 📌 Cabeçalho da tabela */
+#rankingTable th {
+    background: rgba(255, 204, 0, 0.3);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* 📌 Listrado para melhorar a visualização */
+#rankingTable tbody tr:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 📌 Responsividade para telas menores */
+@media (max-width: 480px) {
+    #rankingContainer {
+        width: 90%;
+        max-width: 100%;
+        height: 143px; /* 🔹 Ajuste de altura para telas menores */
+    }
+
+    #rankingTable {
+        width: 92%;
+        font-size: 14px;
+    }
+
+    #rankingTable th, #rankingTable td {
+        padding: 10px;
+    }
+}
+
+.botoes {
+    display: flex;
+}
+
+/* Estilo do modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    padding: 10px;
+}
+
+.close-button {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: red;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#openSettings {
+    float: right;
+    top: 9%;
+    right: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background: #008c2c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 50px;
+}
+
+#openSettings:hover {
+    background: #ffff00;
+}
+
+/* Seletor de modos */
+.difficulty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    max-width: 250px;
+    margin: 10px auto;
+}
+
+/* Estilização do label */
+.difficulty-container label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Estilização do select */
+#difficultySelector {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #ff9800;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Animação ao passar o mouse */
+#difficultySelector:hover {
+    background: #ffcc00;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* Efeito ao focar no campo */
+#difficultySelector:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+}
+
+/* Estilo das opções */
+#difficultySelector option {
+    background: #222;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Botão de Volume */
+#volumeButton {
+    background: #06a600;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.3s;
+}
+
+.volume-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* botao para sapvar os configuracoes */
+#saveSettings {
+    width: 100%;
+    padding: 10px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#saveSettings:hover {
+    background: #e68900;
+}
+
+/* Container para o seletor de tema */
+.theme-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    max-width: 250px;
+    margin: 10px auto;
+}
+
+/* Estilização do label */
+.theme-container label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Estilização do select */
+#themeSelector {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #ff9800;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Animação ao passar o mouse */
+#themeSelector:hover {
+    background: #ff9800;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* Efeito ao focar no campo */
+#themeSelector:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+}
+
+/* Estilo das opções */
+#themeSelector option {
+    background: #222;
+    color: #fff;
+    font-weight: bold;
+}
+
+#celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    overflow: hidden;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+#celebrationMessage {
+    font-size: 2rem;
+    color: #ffdd57;
+    text-shadow: 0 0 10px #ffdd57, 0 0 20px #ffbb33;
+    font-weight: bold;
+    animation: scaleUp 1s ease-in-out;
+    max-width: 80%;
+}
+
+.particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #ffdd57 0%, #ff8800 100%);
+    border-radius: 50%;
+    opacity: 0;
+    animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+    0% { opacity: 1; transform: scale(1) translate(0, 0); }
+    100% { opacity: 0; transform: scale(2) translate(var(--x), var(--y)); }
+}
+
+@keyframes scaleUp {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Títulos */
+
+h2 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* Container de pontuação */
+#scoreBoard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 15px;
+}
+
+/* Estilização da pontuação */
+#score, #bestScore {
+    font-size: 12px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    
+}
+
+/* Destacando os números */
+#scoreNumber, #bestScoreNumber {
+    
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffeb3b; 
+    text-shadow: 0 0 8px rgba(255, 235, 59, 0.8);
+    margin-left: 10px;
+}
+
+.cornamevida {
+    color: yellow;
+}
+
+
+.vidacontainer {
+    margin-top: 10px;
+}
+
+/* Botões estilosos */
+button {
+    width: 180px;
+    background: linear-gradient(45deg, #4CAF50, #2E7D32);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin: 8px;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+}
+
+/* Efeito ao passar o mouse */
+button:hover {
+    background: linear-gradient(45deg, #66BB6A, #388E3C);
+    transform: scale(1.05);
+}
+
+/* Botão ativo (clicado) */
+button:active {
+    transform: scale(0.95);
+}
+
+/* Botão de restart */
+#restartButton {
+    display: none;
+    
+}
+
+/* Botão de pausa */
+#pauseButton {
+    background: linear-gradient(45deg, #FFC107, #FF9800);
+    box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+    height: 45px;
+    width: 110px;
+}
+
+#pauseButton:hover {
+    background: linear-gradient(45deg, #FFD54F, #FFA726);
+}
+
+/* Canvas (área do jogo) */
+#gameCanvas {
+    background-color: #111;
+    border: 5px solid #4CAF50;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    width: 98%;
+    max-width: 420px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+}
+
+/* Estiliza o Game Over */
+#gameOver {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    color: #FF3D00;
+    text-shadow: 4px 4px 10px rgba(255, 0, 0, 0.8);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    #gameCanvas {
+        max-width: 85%;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 10px 18px;
+        width: 160px;
+    }
+
+    #scoreBoard {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    #gameCanvas {
+        max-width: 100%;
+    }
+
+    button {
+        font-size: 20px;
+        padding: 10px;
+        width: 150px;
+    }
+
+    #scoreBoard {
+        padding: 10px;
+    }
+    
+}

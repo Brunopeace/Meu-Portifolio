@@ -1,0 +1,148 @@
+<!DOCTYPE html>  
+<html lang="pt-BR">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStkNwZtkUS5a_G1LI516DxkocS2YGxMAB5OM4-yaZHokeJ-q5vfO8h6u0&s=10">  
+    <title>game of snake</title>  
+      <link rel="stylesheet" href="css/styles.css">   
+</head>
+<body>
+   
+  <!-- Botão para abrir o modal -->
+
+<!-- Modal -->
+<div id="settingsModal" class="modal">
+   
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Configurações</h2>
+<hr>
+       
+<div class="volume-container">
+            <h2>Volume</h2>
+    <button id="volumeButton">
+        🔊 <span id="volumeValue">100%</span>
+    </button>
+</div>
+<br><br><br>
+ <label for="difficultySelector">Modo:</label>
+ 
+<select id="difficultySelector">
+    <option value="easy">Fácil</option>
+    <option value="medium">Médio</option>
+    <option value="hard">Difícil</option>
+</select>
+<br><br>
+        <!-- Seleção de Tema -->
+<div class="theme-container">
+    <label for="themeSelector">Tema da cobra:</label>
+    <select id="themeSelector">
+      <option value="default">Padrão</option>
+      <option value="neon">Neon</option>
+      <option value="dark">Noite Sombria</option>
+      <option value="fire">Fogo</option>
+      <option value="pastel">Pastel</option>
+      <option value="jungle">Selva</option>
+      <option value="sunset">Pôr do Sol</option>
+      <option value="ice">Gelo</option>
+      <option value="glowing">Brilho</option>
+      <option value="rainbow">Arco-Íris</option>
+      <option value="pulse">Pulso</option>
+      <option value="shadow">Sombras</option>
+      <option value="snowfall">Neve</option>
+      <option value="electricShock">Elétrico</option>
+      <option value="pixelArt">Pixel Art</option>
+      <option value="threeD">3D</option>
+      <option value="santaCruz">Santa Cruz</option>
+      <option value="sport">Sport</option>
+      <option value="brasil">Brasil</option>
+      <option value="argentina">Argentina</option>
+        
+    </select>
+</div>
+<button id="saveSettings">Salvar Configurações</button>
+</div>
+</div>
+
+<div class="botoes">
+<button id="restartButton" style="display: none">Iniciar Jogo</button>
+<button id="pauseButton">Pausar</button>
+<button id="openSettings">⚙️</button> 
+</div> <!-- div dos botões -->
+
+<div class="vidacontainer">
+<strong class="cornamevida">Vidas:</strong> <span id="livesNumber">5</span>
+</div>
+
+<div id="rankingContainer">
+    
+    <div class="pontuacoes">
+<div id="score">Pontuação: <span id="scoreNumber">0</span>
+</div>
+
+<div id="bestScore">Melhor Pontuação:<span id="bestScoreNumber">0</span>
+</div>
+</div>
+    
+    <h2>Ranking Global</h2>
+    <table id="rankingTable">
+        <thead>
+            <tr>
+                <th>Posição</th>
+                <th>Nome</th>
+                <th>Pontos</th>
+            </tr>
+        </thead>
+        <tbody id="rankingBody"></tbody>
+    </table>
+</div> <!-- final div de todas as configurações -->
+
+<!-- 🔹 Modal para digitar o nome do jogador -->
+<div id="nameModal" class="modal">
+<div class="modal-content">
+        <h2>Digite seu nome</h2>
+        <input type="text" id="playerNameInput" placeholder="Seu nome..." maxlength="10">
+        <button id="confirmNameButton">Confirmar</button>
+</div>
+</div>
+
+    <canvas id="gameCanvas"></canvas>
+    
+<audio id="eatSound" src="mp3/eat.mp3"></audio>  
+<audio id="collisionSound" src="mp3/collision.mp3"></audio>
+<audio id="celebrationSound" src="mp3/celebration.mp3"></audio>
+
+   <script src="js/scripts.js"></script> 
+        <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+  import { getDatabase, ref, push, query, orderByChild, limitToLast, get, remove } 
+    from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+
+  // 🔹 Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyChQdaPKrg75pKo4DqfJetmBq9QzqGljxg",
+    authDomain: "ranques-47015.firebaseapp.com",
+    databaseURL: "https://ranques-47015-default-rtdb.firebaseio.com",
+    projectId: "ranques-47015",
+    storageBucket: "ranques-47015.firebasestorage.app",
+    messagingSenderId: "330830298362",
+    appId: "1:330830298362:web:fc28800bb4014f375d5d43"
+  };
+
+  // 🔹 Inicializar Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+
+  // 🔹 Tornar funções globais para uso no scripts.js
+  window.firebaseDatabase = database;
+  window.firebaseRef = ref;
+  window.firebasePush = push;
+  window.firebaseQuery = query;
+  window.firebaseOrderByChild = orderByChild;
+  window.firebaseLimitToLast = limitToLast;
+  window.firebaseGet = get;
+  window.firebaseRemove = remove; // 🔹 Agora a função remove() está disponível
+</script>
+</body>  
+</html>
