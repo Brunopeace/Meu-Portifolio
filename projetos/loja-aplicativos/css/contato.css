@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: #1c1c1c;
+    box-sizing: border-box;
+}
+
+header {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.contato {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+span {
+    margin: 5px;
+    color: #e3b900;
+    display: flex;
+}
+
+p {
+    color: #00c25a;
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+}
+
+h1 {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+
+.banner {
+    height: 100px;
+    width: 60%;
+    margin-top: 10px;
+}
+
+.container {
+    height: 99vh;
+    border: 2px solid #ffffff;
+}
+
+footer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: #ffffff;
+    margin-top: 127%;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+    
+    
+}
+
+footer strong {
+    margin-left: 6px;
+}
+
+footer strong a{
+    color: #e3b900;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #00de04 50%, #ffc400 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+@media (max-width: 330px) {
+  .banner {
+    height: 90px; /* Ajuste para telas menores */
+    width: 70%;
+    margin-top: 15px;
+  }
+}
+
+
+@media (max-width: 400px) {
+  .banner {
+    height: 80px;
+    width: 60%;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 1024px) {
+  .banner {
+    height: 100px;
+    width: 60%;
+    margin-top: 10px;
+  }
+}

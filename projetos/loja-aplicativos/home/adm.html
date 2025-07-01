@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/adm.css" />
+  <title>ADM</title>
+</head>
+<body>
+
+  <header>
+      <h1>Atendimento adm</h1>
+  </header>
+
+  <div id="chat"></div>
+
+  <div id="input-area">
+    <input type="text" id="msgInput" placeholder="Digite sua mensagem..." />
+    <div class="btn-enviar-limpar">
+    <button id="sendBtn">Enviar</button>
+    <button id="limparBtn">Limpar</button>
+    </div>
+  </div>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp,
+    query,
+    orderBy,
+    onSnapshot,
+    getDocs,
+    deleteDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBSJ-WQHou3VHu21EHwoU0PwTWnmxk6EMk",
+    authDomain: "suporte-227a9.firebaseapp.com",
+    projectId: "suporte-227a9",
+    storageBucket: "suporte-227a9.appspot.com",
+    messagingSenderId: "485248070313",
+    appId: "1:485248070313:web:148ce8986a15a79db82fb8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const chatDiv = document.getElementById("chat");
+  const msgInput = document.getElementById("msgInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const limparBtn = document.getElementById("limparBtn"); // Botão de limpar
+
+  async function enviarMensagem() {
+    const texto = msgInput.value.trim();
+    if (texto === "") return;
+
+    await addDoc(collection(db, "mensagens"), {
+      texto,
+      remetente: "ADM",
+      timestamp: serverTimestamp()
+    });
+
+    msgInput.value = "";
+  }
+
+  sendBtn.addEventListener("click", enviarMensagem);
+  msgInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") enviarMensagem();
+  });
+
+  const mensagensRef = collection(db, "mensagens");
+  const q = query(mensagensRef, orderBy("timestamp"));
+
+  onSnapshot(q, (snapshot) => {
+    chatDiv.innerHTML = "";
+    snapshot.forEach((doc) => {
+      const { remetente, texto } = doc.data();
+      const div = document.createElement("div");
+      div.classList.add("msg", remetente === "ADM" ? "adm" : "cliente");
+      div.innerHTML = `<strong>${remetente}:</strong> ${texto}`;
+      chatDiv.appendChild(div);
+    });
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+  });
+
+  limparBtn.addEventListener("click", async () => {
+    if (!confirm("Tem certeza que deseja apagar todas as mensagens?")) return;
+
+    try {
+      const snapshot = await getDocs(mensagensRef);
+      const deletarTudo = snapshot.docs.map((documento) =>
+        deleteDoc(doc(db, "mensagens", documento.id))
+      );
+      await Promise.all(deletarTudo);
+      chatDiv.innerHTML = "";
+      alert("Conversa apagada com sucesso.");
+    } catch (erro) {
+      console.error("Erro ao apagar mensagens:", erro);
+      alert("Erro ao apagar mensagens.");
+    }
+  });
+</script>
+</body>
+</html>

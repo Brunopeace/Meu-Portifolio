@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="icon" href="img/logo-padrao.png">
+  <title>Home</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+  <input type="checkbox" id="menu-toggle" class="menu-toggle">
+
+  <!-- Overlay para fechar o menu ao clicar fora -->
+  <label for="menu-toggle" class="overlay"></label>
+
+  <!-- Botão de menu estilizado com label -->
+  <label for="menu-toggle" class="menu-button">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
+
+  <!-- Menu Sidebar -->
+  <div class="sidebar">
+    <img src="img/logo-padrao.jpg" class="logo-sidebar">
+    <ul>
+      <li class="active"><a href="home/aplicativos.html" target="content-frame">Aplicativos</a></li>
+      <li><a href="home/dns.html" target="content-frame">DNS</a></li>
+      <li><a href="home/tutoriais.html" target="content-frame">Suporte-online</a></li>
+      <li><a href="home/contato.html" target="content-frame">Contato</a></li>
+      <li><a href="home/adm.html" target="content-frame">ADM</a></li>
+    </ul>
+  </div>
+
+  <!-- Conteúdo Principal -->
+  <div class="main-content">
+    <iframe name="content-frame" src="home/aplicativos.html"></iframe>
+  </div>
+  
+  <button id="install-button">Instalar App</button>
+  <script type="module" src="js/scripts.js"></script>
+</body>
+</html>

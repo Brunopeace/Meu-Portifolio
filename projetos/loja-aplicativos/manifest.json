@@ -1,0 +1,24 @@
+{
+  "name": "painel Apps",
+  "short_name": "Aplicativos",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#000000",
+  "icons": [
+    {
+      "src": "img/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icon1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
