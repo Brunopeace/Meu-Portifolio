@@ -82,8 +82,6 @@ document.getElementById('backToTop').onclick = function() {
 };
 
 
-
-
 function esvaziarLixeira() {
     if (confirm("Tem certeza de que deseja esvaziar a lixeira? Isso removerá permanentemente todos os clientes nela.")) {
         localStorage.removeItem('lixeira');
@@ -492,19 +490,7 @@ function adicionarLinhaTabela(nome, telefone, data) {
             }
         }
     }));
-
-
-
-
-
-
-
-
-
-
-
-
-    celulaAcoes.appendChild(criarBotao("Excluir", function() {
+ celulaAcoes.appendChild(criarBotao("Excluir", function() {
         if (confirm("Tem certeza de que deseja excluir este cliente?")) {
             excluirCliente(nome);
         }
@@ -528,7 +514,7 @@ function adicionarLinhaTabela(nome, telefone, data) {
 
         // Construir a mensagem com a saudação correta
         const mensagem = encodeURIComponent(
-            `*Olá ${saudacao}, seu plano de canais está vencendo, com data de vencimento dia ${dataVencimentoDestacada}. Caso queira renovar após esta data, favor entrar em contato.* \n \n *PIX CPF* \n \n 05222280462 `
+            `*Olá ${saudacao}, seu plano de canais está vencendo, com data de vencimento dia ${dataVencimentoDestacada}. Caso queira renovar após esta data, favor entrar em contato.* \n \n \n \n `
         );
         const telefoneCliente = telefone.replace(/\D/g, '');
         abrirWhatsApp(telefoneCliente, mensagem);
@@ -629,16 +615,6 @@ localStorage.setItem('clientesAlterados', JSON.stringify(clientesAlterados));
 exibirClientesAlterados();
 }
 
-
-
-
-
-
-
-
-
-
-
 // Função para exibir a lista de clientes alterados na interface
 function registrarClienteAlterado(nome) {
     const hoje = new Date().toLocaleDateString('pt-BR');
@@ -669,16 +645,6 @@ function registrarClienteAlterado(nome) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 function exibirClientesAlterados() {
     const clientesAlterados = JSON.parse(localStorage.getItem('clientesAlterados')) || [];
     const hoje = new Date().toLocaleDateString('pt-BR');
@@ -697,16 +663,6 @@ function exibirClientesAlterados() {
 document.addEventListener('DOMContentLoaded', () => {
     exibirClientesAlterados();
 });
-
-
-
-
-
-
-
-
-
-
 
 function atualizarDataVencimento(nomeCliente, novaData) {
     let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
@@ -747,16 +703,6 @@ function editarCliente(nomeAntigo, novoNome, novoTelefone, novaDataVencimento) {
         document.addEventListener('DOMContentLoaded', () => {
             exibirClientesAlterados();
         });
-
-
-
-
-
-
-
-
-
-
 
 function criarBotao(texto, callback) {
     const btn = document.createElement("button");
