@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 </head>
 <body>
+    <button id="toggle-theme" aria-label="Alternar modo escuro/claro">🌙</button>
     
   <header data-aos="fade-down">
     <h1>Bruno Silva</h1>
@@ -70,6 +71,13 @@
         <p>Loja online com instalação de apps, botão de instalar, propaganda e avaliação.</p>
         <a href="projetos/loja-aplicativos/index.html" target="_blank">Ver Projeto</a>
       </div>
+      
+      <div class="card" data-aos="zoom-in">
+  <img src="img/lista-compras.jpg" alt="Lista de Compras">
+  <h3>🛒 Lista de Compras</h3>
+  <p>Aplicativo prático para organizar suas compras do dia a dia. Permite adicionar, marcar como comprado, excluir e manter sua lista salva mesmo após fechar o navegador.</p>
+  <a href="projetos/lista-compras/index.html" target="_blank">Ver Projeto</a>
+</div>
       
       <div class="card" data-aos="zoom-in">
         <img src="img/chatbot.jpg" alt="Chatbot">
@@ -141,11 +149,10 @@
     <p>© 2025 Bruno Silva - Todos os direitos reservados.</p>
   </footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
     AOS.init({ duration: 1000 });
-  </script>
-
+</script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
@@ -194,5 +201,7 @@
     document.getElementById("visitas").textContent = total ?? 0;
   });
 </script>
+
+<script src="js/scripts.js"></script>
 </body>
 </html>
