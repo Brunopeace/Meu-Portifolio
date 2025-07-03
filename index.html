@@ -133,7 +133,9 @@
 
   <section class="download-cv" data-aos="zoom-in">
     <a href="#" download>📄 Baixar Currículo</a>
-  </section>
+  </section><div id="contador-visitas" class="contador">
+ <span id="visitas">...</span>
+</div>
 
   <footer>
     <p>© 2025 Bruno Silva - Todos os direitos reservados.</p>
@@ -143,5 +145,54 @@
   <script>
     AOS.init({ duration: 1000 });
   </script>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  if (!sessionStorage.getItem("visitouPortifolio")) {
+    sessionStorage.setItem("visitouPortifolio", "true");
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUhl3I17ry1X_yL5wVwM-ktp0XNuVWk8E",
+      authDomain: "contador-pf.firebaseapp.com",
+      databaseURL: "https://contador-pf-default-rtdb.firebaseio.com",
+      projectId: "contador-pf",
+      storageBucket: "contador-pf.firebasestorage.app",
+      messagingSenderId: "971375502461",
+      appId: "1:971375502461:web:29b8687634413f80e3fd14"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const visitasRef = ref(db, "visitas");
+
+    // Incrementa contador
+    runTransaction(visitasRef, (valorAtual) => {
+      return (valorAtual || 0) + 1;
+    });
+  }
+
+  // Sempre exibe o valor, mesmo que não conte
+  const firebaseConfig = {
+    apiKey: "AIzaSyAUhl3I17ry1X_yL5wVwM-ktp0XNuVWk8E",
+    authDomain: "contador-pf.firebaseapp.com",
+    databaseURL: "https://contador-pf-default-rtdb.firebaseio.com",
+    projectId: "contador-pf",
+    storageBucket: "contador-pf.firebasestorage.app",
+    messagingSenderId: "971375502461",
+    appId: "1:971375502461:web:29b8687634413f80e3fd14"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const visitasRef = ref(db, "visitas");
+
+  onValue(visitasRef, (snapshot) => {
+    const total = snapshot.val();
+    document.getElementById("visitas").textContent = total ?? 0;
+  });
+</script>
 </body>
 </html>
