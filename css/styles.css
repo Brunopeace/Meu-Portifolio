@@ -92,6 +92,10 @@ h2 {
   transition: background 0.3s;
 }
 
+a {
+    font-weight: bold;
+}
+
 .card a:hover {
   background: #2c80b4;
 }
@@ -234,4 +238,70 @@ footer {
 
 .download-cv a:hover {
   background: #27ae60;
+}
+
+/* modo escuro*/
+#toggle-theme {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffffff;
+  border: 1px solid #ffffff;;
+  padding: 10px 12px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 999;
+  transition: background 0.3s ease;
+}
+
+#toggle-theme:hover {
+  background: #f0f0f0;
+}
+
+/* Estilos do modo escuro */
+body.dark-mode {
+  background: #1e1e1e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .card {
+  background: #2c2c2c;
+  color: #ddd;
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode a {
+  color: #8ab4f8;
+}
+
+body.dark-mode p {
+  color: #ffffff;
+}
+
+body.dark-mode li {
+  color: #ffffff;
+}
+
+body.dark-mode #toggle-theme {
+  background: #333;
+  color: #fff;
+}
+
+body.dark-mode .download-cv a{
+    color: #ffffff;
+}
+
+body.dark-mode h1{
+    color: yellow;
+}
+
+body.dark-mode h2{
+    color: #ffffff;
+}
+
+body.dark-mode a{
+    color: #ffffff;
+    font-weight: bold;
 }
