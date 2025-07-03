@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja</title>
+    <link rel="stylesheet" href="css/inicio.css">
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header>
+        <div class="banner">
+        <img src="img/destaques.webp" alt="Banner Promocional">
+    </div>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="produtos/produtos.html">Produtos</a>
+<a href="carrinho/carrinho.html">Carrinho <i class="bi bi-cart4"></i> <span id="cart-count">0</span></a>
+        </nav>
+    </header>
+
+    <section id="destaques">
+        
+    </section>
+
+    <script src="js/inicio.js"></script>
+    
+    
+    
+    <!-- Botão do WhatsApp -->
+<a href="javascript:void(0);" class="whatsapp-button" onclick="toggleChat()">
+    <i class="bi bi-whatsapp"></i></a>
+
+<!-- Mini chat flutuante -->
+<div id="whatsapp-chat" class="chat-container">
+    <div class="chat-header">
+        <span>Atendimento whatsapp</span>
+        <button class="fechar" onclick="toggleChat()">✖</button>
+    </div>
+    <textarea id="chat-message" placeholder="Digite sua mensagem..."></textarea>
+    <button onclick="enviarWhatsApp()">Enviar</button>
+</div>
+</body>
+</head>

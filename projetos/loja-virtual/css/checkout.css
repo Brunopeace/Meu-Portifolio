@@ -1,0 +1,288 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo do corpo */
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+span {
+    color: #c78f00;
+}
+
+p {
+    font-weight: bold;
+}
+
+strong {
+    color: green;
+}
+
+header {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.banner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+}
+
+.banner h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 28px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+nav {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: 100%;
+    justify-content: center;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    transition: 0.3s ease;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+#checkout {
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+    margin: 30px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#checkout h2, #checkout h3 {
+    margin-bottom: 15px;
+    color: #007bff;
+    font-wieght: bold;
+}
+
+#lista-checkout {
+    list-style: none;
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    max-width: 500px;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#lista-checkout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#lista-checkout li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+#lista-checkout li:last-child {
+    border-bottom: none;
+}
+
+#lista-checkout img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    object-fit: cover;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+#btnWhatsApp {
+    
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #25D366, #128C7E);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#btnWhatsApp:hover {
+    background: linear-gradient(45deg, #128C7E, #25D366);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#btnWhatsApp:active {
+    transform: scale(0.98);
+    box-shadow: none;
+}
+
+#btnWhatsApp i {
+    margin-right: 8px;
+    font-size: 22px;
+}
+
+
+#btnPix {
+    background-color: #00b894;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#btnPix:hover {
+    background-color: #008c72;
+    transform: scale(1.05);
+}
+
+#btnPix::before {
+    font-size: 20px;
+}
+
+#pixContainer {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+#pixContainer img {
+    max-width: 200px;
+    margin: 10px 0;
+}
+
+#cart-count {
+    background: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    header {
+        height: 200px;
+    }
+
+    .banner h1 {
+        font-size: 22px;
+    }
+
+    nav {
+        display: flex;
+        gap: 10px;
+        padding: 8px 15px;
+    }
+
+    #carrinho {
+        max-width: 100%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    #checkout {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    nav {
+        gap: 5px;
+    }
+}

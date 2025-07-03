@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho</title>
+    <link rel="stylesheet" href="../css/carrinho.css">
+</head>
+<body>
+    
+    <header>
+        <div class="banner">
+            <img src="../img/banner.jpg" alt="Banner Promocional">
+        </div>
+        <nav>
+            <a href="../index.html">Início</a>
+            <a href="../produtos/produtos.html">Produtos</a>
+        </nav>
+    </header>
+
+    <section id="carrinho">
+        <h2>Seus Produtos</h2>
+        <ul id="lista-carrinho"></ul>
+        <p><strong>Total (<span id="cart-count">0</span> itens): <span id="total">R$ 0,00</span></strong></p>
+
+        <div class="botoes">
+            <button id="finalizarCompra">Finalizar Compra</button> <!-- Adicionado ID -->
+        </div>
+    </section>
+
+    <script src="../js/carrinho.js"></script>
+</body>
+</html>

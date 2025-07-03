@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="../css/checkout.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header>
+        <div class="banner">
+        <img src="../img/check-out.webp" alt="Banner Promocional">
+    </div>
+        <nav>
+            <a href="../index.html">Início</a>
+            <a href="../produtos/produtos.html">Produtos</a>
+            <a href="../carrinho/carrinho.html">Carrinho <i class="bi bi-cart4"></i></span></a>
+        </nav>
+    </header>
+
+    <section id="checkout">
+        <h2>Resumo do Pedido</h2>
+        <ul id="lista-checkout"></ul>
+     <h3>Total: <span id="total" id="cart-total">R$ 0,00</span></h3>
+
+        <button id="btnPix"><i class="bi bi-credit-card"></i>Pagar com PIX</button>
+<div id="pixContainer" style="display: none; text-align: center;">
+    
+    <p>Apos o pagamento clique no botão <br>[ <strong>Enviar Comprovante ]</strong> <br>para enviar seu pedido, e em seguida favor enviar o comprovante de pagamento</p>
+    <img id="qrPix" src="../img/chavepix.jpg" alt="QR Code PIX" style="max-width: 250px;">
+    brunopeaceandlove60@gmail.com
+</div>
+
+    <button id="btnWhatsApp">
+    <i class="bi bi-whatsapp"></i> Enviar Comprovante
+</button>
+    </section>
+
+    <script src="../js/checkout.js"></script>
+</body>
+</html>
