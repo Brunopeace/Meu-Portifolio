@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 </head>
 <body>
-
+    
   <header data-aos="fade-down">
     <h1>Bruno Silva</h1>
     <p>Desenvolvedor Frontend apaixonado por criar soluções web criativas e funcionais.</p>
@@ -33,11 +33,36 @@
 </div>
       
       <div class="card" data-aos="zoom-in">
-        <img src="img/gerenciador-clientes.jpg" alt="Gerenciador de Clientes">
-        <h3>📁 Gerenciador de Clientes</h3>
-        <p>Controle completo de clientes com backup manual e automático, lixeira e muito mais funções.</p>
-        <a href="projetos/gerenciador-clientes/index.html" target="_blank">Ver Projeto</a>
-      </div>
+  <img src="img/gerenciador-clientes.jpg" alt="Gerenciador de Clientes">
+  <h3>📁 Gerenciador de Clientes</h3>
+  <p>
+    Aplicativo web completo para controle de vencimentos de clientes com:
+    <br><br>
+    ✅ Backup automático e manual<br>
+    ✅ Avisos por WhatsApp e Telegram<br>
+    ✅ Lixeira com restauração<br>
+    ✅ Pesquisa, edição e exclusão<br>
+    ✅ Totalmente offline e instalável (PWA)<br>
+    ✅ Destaque de vencidos e renovados<br>
+  </p>
+  <a href="projetos/gerenciador-clientes/index.html" target="_blank">Ver Projeto</a>
+</div>
+      
+      <div class="card" data-aos="zoom-in">
+  <img src="img/loja-virtual.jpg" alt="Loja Virtual com Pix e WhatsApp">
+  <h3>🛍️ Loja Virtual Profissional</h3>
+  <p>
+    Sistema completo de loja virtual com carrinho de compras, checkout moderno, pagamento via Pix com QR Code e envio automático do pedido pelo WhatsApp e suporte para envio de comprovante.
+  </p>
+  <ul style="text-align: left; padding-left: 20px;">
+    <li>✅ Catálogo de produtos</li>
+    <li>✅ Carrinho e Checkout</li>
+    <li>✅ Pagamento via Pix</li>
+    <li>✅ Envio do pedido via WhatsApp</li>
+    <li>✅ Design responsivo e moderno</li>
+  </ul>
+  <a href="projetos/loja-virtual/index.html" target="_blank">Ver Projeto</a>
+</div>
       
       <div class="card" data-aos="zoom-in">
         <img src="img/loja-aplicativos.jpg" alt="Loja de Aplicativos">
@@ -63,29 +88,46 @@
   </section>
 
   <section class="section skills" data-aos="fade-up">
-    <h2>Habilidades Técnicas</h2>
-    <ul>
-      <li>HTML5</li>
-      <li>CSS3 (Flexbox / Grid / Responsivo)</li>
-      <li>JavaScript Puro</li>
-      <li>localStorage</li>
-      <li>DOM e Eventos</li>
-    </ul>
-  </section>
+  <h2>💡 Habilidades Técnicas</h2>
+  <div class="skills-grid">
+    <div class="skill-item">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
+      <span>HTML5</span>
+    </div>
+    <div class="skill-item">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
+      <span>CSS3 (Flexbox / Grid)</span>
+    </div>
+    <div class="skill-item">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+      <span>JavaScript Puro</span>
+    </div>
+    <div class="skill-item">
+      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="localStorage">
+      <span>localStorage</span>
+    </div>
+    <div class="skill-item">
+      <img src="https://cdn-icons-png.flaticon.com/512/220/220512.png" alt="DOM e Eventos">
+      <span>DOM e Eventos</span>
+    </div>
+  </div>
+</section>
 
-  <section class="section" data-aos="fade-up">
-  <h2>Contato</h2>
+  <section class="section contato" data-aos="fade-up">
+  <h2>📬 Fale Comigo</h2>
   <form action="https://formsubmit.co/brunopeaceandlove60@gmail.com" method="POST">
-    <input type="text" name="name" placeholder="Seu nome" required>
-    <input type="email" name="email" placeholder="Seu e-mail" required>
+    <div class="form-group">
+      <input type="text" name="name" placeholder="Seu nome" required>
+      <input type="email" name="email" placeholder="Seu e-mail" required>
+    </div>
     <textarea name="message" rows="5" placeholder="Sua mensagem" required></textarea>
 
-    <!-- Campos ocultos para personalizar -->
+    <!-- Campos ocultos -->
     <input type="hidden" name="_subject" value="Nova mensagem do portfólio!">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_template" value="box">
 
-    <button type="submit">Enviar</button>
+    <button type="submit">📨 Enviar Mensagem</button>
   </form>
 </section>
 
