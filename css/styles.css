@@ -260,6 +260,26 @@ footer {
   background: #f0f0f0;
 }
 
+#btnInstalar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #3498db;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+  z-index: 999;
+  transition: background 0.3s ease;
+}
+
+#btnInstalar:hover {
+  background: #2c80b4;
+}
+
 /* Estilos do modo escuro */
 body.dark-mode {
   background: #1e1e1e;
