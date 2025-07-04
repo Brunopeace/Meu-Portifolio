@@ -1,3 +1,12 @@
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("✅ Service Worker registrado"))
+        .catch((err) => console.log("❌ Erro no Service Worker:", err));
+    });
+  }
+
 const btn = document.getElementById('toggle-theme');
   const body = document.body;
 
@@ -13,3 +22,28 @@ const btn = document.getElementById('toggle-theme');
     localStorage.setItem('tema', temaAtual);
     btn.textContent = temaAtual === 'escuro' ? '☀️' : '🌙';
   });
+  
+  window.onload = () => {
+  let deferredPrompt;
+  const installBtn = document.getElementById('btnInstalar');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+  });
+
+  installBtn.addEventListener('click', () => {
+    installBtn.style.display = 'none';
+    deferredPrompt.prompt();
+
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('✅ App instalado com sucesso!');
+      } else {
+        console.log('❌ Instalação cancelada.');
+      }
+      deferredPrompt = null;
+    });
+  });
+};
