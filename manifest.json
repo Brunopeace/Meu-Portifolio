@@ -1,14 +1,20 @@
 {
-  "name": "Taxímetro",
-  "short_name": "Taxi",
-  "start_url": "./index.html",
+  "name": "Portfólio Bruno Silva",
+  "short_name": "Portfólio",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#007bff",
+  "theme_color": "#3498db",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "img/icon-192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
