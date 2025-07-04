@@ -1,20 +1,22 @@
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open("taximetro-v1").then(cache => {
-      return cache.addAll([
-        "./",
-        "./index.html",
-        "./style.css",
-        "./script.js",
-        "./manifest.json",
-        "./icon.png"
-      ]);
-    })
+const CACHE_NAME = "portfolio-cache-v1";
+const urlsToCache = [
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/style.css",
+  "/img/icon-192.png",
+  "/img/icon-512.png"
+  // adicione aqui seus outros arquivos importantes
+];
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => response || fetch(event.request))
   );
 });
