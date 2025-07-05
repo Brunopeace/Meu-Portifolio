@@ -241,10 +241,6 @@ footer {
   font-weight: bold;
 }
 
-.download-cv:hover {
-  background: #27ae60;
-}
-
 /* modo escuro*/
 #toggle-theme {
   position: fixed;
