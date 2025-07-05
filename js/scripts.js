@@ -47,7 +47,22 @@ const btn = document.getElementById('toggle-theme');
     });
   });
 };
-
+  
+  
+  /* para não pegar o link pelo botão*/
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
+
+  function baixarPDF() {
+    const elemento = document.body; // ou pode ser um div específico
+    const opt = {
+      margin:       0.5,
+      filename:     'portfolio-bruno-silva.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(elemento).save();
+  }
