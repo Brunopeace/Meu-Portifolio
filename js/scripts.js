@@ -47,3 +47,7 @@ const btn = document.getElementById('toggle-theme');
     });
   });
 };
+
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
