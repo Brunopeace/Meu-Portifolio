@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#3498db">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <button id="toggle-theme" aria-label="Alternar modo escuro/claro">🌙</button>
@@ -141,9 +143,11 @@
   </form>
 </section>
 
-  <section class="download-cv" data-aos="zoom-in">
-    <a href="#" download>📄 Baixar Currículo</a>
-  </section><div id="contador-visitas" class="contador">
+  <section class="download-cv">
+  <button  onclick="baixarPDF()">📄 Baixar PDF</button>
+  </section>
+  
+  <div id="contador-visitas" class="contador">
  <span id="visitas">...</span>
 </div>
 
