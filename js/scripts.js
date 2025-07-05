@@ -54,14 +54,15 @@ document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
 
+
   function baixarPDF() {
-    const elemento = document.body; // ou pode ser um div específico
+    const elemento = document.getElementById('portfolio'); // Agora captura só o conteúdo
     const opt = {
-      margin:       0.5,
-      filename:     'portfolio-bruno-silva.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      margin: 0.5,
+      filename: 'portfolio-bruno-silva.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
 
     html2pdf().set(opt).from(elemento).save();
