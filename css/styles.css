@@ -94,6 +94,9 @@ h2 {
 
 a {
     font-weight: bold;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .card a:hover {
