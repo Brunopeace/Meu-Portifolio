@@ -228,18 +228,20 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  
 }
 
-.download-cv a {
+.download-cv button{
   background: #2ecc71;
   color: white;
   padding: 12px 24px;
   text-decoration: none;
   border-radius: 10px;
+  border: 1px solid #ffffff;
   font-weight: bold;
 }
 
-.download-cv a:hover {
+.download-cv:hover {
   background: #27ae60;
 }
 
