@@ -207,3 +207,95 @@
 <button id="btnInstalar" style="display: none;">📲 Instalar Aplicativo</button>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { initializeApp } = require("firebase-admin/app");
+const { getDatabase } = require("firebase-admin/database");
+const { getMessaging } = require("firebase-admin/messaging");
+
+initializeApp();
+
+exports.notificarClientes = onSchedule(
+  {
+    schedule: "0 7 * * *", // 07:00 da manhã
+    timeZone: "America/Sao_Paulo"
+  },
+  async () => {
+
+    const db = getDatabase();
+
+    // Carrega todos os clientes
+    const clientesSnapshot = await db.ref("clientes").once("value");
+    const clientes = clientesSnapshot.val() || {};
+
+    // Carrega tokens
+    const devicesSnapshot = await db.ref("devices").once("value");
+    const devices = devicesSnapshot.val() || {};
+    const tokens = Object.keys(devices);
+
+    if (tokens.length === 0) {
+      console.log("Nenhum token encontrado.");
+      return;
+    }
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    for (const id in clientes) {
+      const cliente = clientes[id];
+
+      if (!cliente.vencimento) continue; // ← USAR CAMPO CERTO
+
+      // Converte data "22/11/2025"
+      const [dia, mes, ano] = cliente.vencimento.split("/");
+      const dataVencimento = new Date(ano, mes - 1, dia);
+
+      const diff = Math.ceil((dataVencimento - hoje) / (1000 * 60 * 60 * 24));
+
+      if (diff === 2) {
+        const nomeCliente = cliente.nome || id;
+
+        const payload = {
+          notification: {
+            title: "Cliente vence em 2 dias",
+            body: `${nomeCliente} vence em 2 dias.`
+          },
+          android: {
+            ttl: 3600 * 1000, // Guarda por 1 hora caso esteja sem internet
+            priority: "high"
+          }
+        };
+
+        await getMessaging().sendToDevice(tokens, payload);
+        console.log(`✔ Notificação enviada para: ${nomeCliente}`);
+      }
+    }
+  }
+);
