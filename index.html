@@ -242,20 +242,25 @@ initializeApp();
 
 exports.notificarClientes = onSchedule(
   {
-    schedule: "00 22 * * *",
+    schedule: "00 22 * * *", // 22:00 todos os dias
     timeZone: "America/Sao_Paulo"
   },
   async () => {
 
     const db = getDatabase();
 
+    // Busca clientes
     const clientesSnapshot = await db.ref("clientes").once("value");
     const clientes = clientesSnapshot.val() || {};
 
+    // Busca devices / tokens
     const devicesSnapshot = await db.ref("devices").once("value");
     const devices = devicesSnapshot.val() || {};
 
-    const tokens = Object.keys(devices);
+    // Tokens reais (não as keys!)
+    const tokens = Object.values(devices)
+      .map(d => d.token)
+      .filter(t => !!t);
 
     if (tokens.length === 0) {
       console.log("Nenhum dispositivo registrado.");
@@ -280,15 +285,16 @@ exports.notificarClientes = onSchedule(
         const message = {
           notification: {
             title: "Cliente vence em 2 dias",
-            body: `${cliente.nome} vence em 2 dias.`
+            body: `O cliente ${id} vence em 2 dias.`
           },
           tokens: tokens
         };
 
-        // ENVIO CORRETO
-        await getMessaging().sendEachForMulticast(message);
+        // Envio correto para vários dispositivos
+        const response = await getMessaging().sendEachForMulticast(message);
 
-        console.log(`✔ Notificação enviada para: ${cliente.nome}`);
+        console.log(`✔ Notificação enviada para cliente ID: ${id}`);
+        console.log("Resultados:", response.successCount, "enviadas com sucesso.");
       }
     }
   }
