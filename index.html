@@ -207,3 +207,55 @@
 <button id="btnInstalar" style="display: none;">📲 Instalar Aplicativo</button>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -----------------------------------------------
+# SCRIPT COMPLETO PARA ATUALIZAR WINDOWS, DRIVERS E PROGRAMAS
+# -----------------------------------------------
+
+Write-Host "=== Iniciando atualização completa do sistema ===" -ForegroundColor Cyan
+
+# 1. Atualizar todos os programas via WINGET
+Write-Host "`nAtualizando programas com winget..." -ForegroundColor Yellow
+winget upgrade --all --silent
+
+# 2. Instalar módulo PSWindowsUpdate (se não existir)
+Write-Host "`nVerificando módulo PSWindowsUpdate..." -ForegroundColor Yellow
+if (-not (Get-Module -ListAvailable -Name PSWindowsUpdate)) {
+    Install-Module PSWindowsUpdate -Force
+}
+
+Import-Module PSWindowsUpdate
+
+# 3. Procurar atualizações do Windows e drivers
+Write-Host "`nVerificando atualizações do Windows e drivers..." -ForegroundColor Yellow
+Get-WindowsUpdate
+
+# 4. Instalar atualizações do Windows e drivers
+Write-Host "`nInstalando atualizações..." -ForegroundColor Yellow
+Install-WindowsUpdate -AcceptAll -AutoReboot
+
+# 5. Reparos no sistema (DISM + SFC)
+Write-Host "`nExecutando DISM..." -ForegroundColor Yellow
+DISM /Online /Cleanup-Image /RestoreHealth
+
+Write-Host "`nExecutando SFC..." -ForegroundColor Yellow
+sfc /scannow
+
+Write-Host "`n=== FIM: Seu PC está completamente atualizado! ===" -ForegroundColor Green
