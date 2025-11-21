@@ -207,3 +207,108 @@
 <button id="btnInstalar" style="display: none;">📲 Instalar Aplicativo</button>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const db = getDatabase();const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { initializeApp } = require("firebase-admin/app");
+const { getDatabase } = require("firebase-admin/database");
+const { getMessaging } = require("firebase-admin/messaging");
+
+initializeApp();
+
+exports.notificarClientes = onSchedule(
+  {
+    schedule: "00 07 * *", // 22:00 todos os dias
+    timeZone: "America/Sao_Paulo"
+  },
+  async () => {
+
+    const db = getDatabase();
+
+    // Clientes
+    const clientesSnapshot = await db.ref("clientes").once("value");
+    const clientes = clientesSnapshot.val() || {};
+
+    // Devices / tokens REAIS
+    const devicesSnapshot = await db.ref("devices").once("value");
+    const devices = devicesSnapshot.val() || {};
+
+    const tokens = Object.values(devices)
+      .map(device => device.token)
+      .filter(token => !!token);
+
+    if (tokens.length === 0) {
+      console.log("Nenhum dispositivo registrado para receber notificações.");
+      return;
+    }
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    for (const id in clientes) {
+
+      const cliente = clientes[id];
+
+      if (!cliente.vencimento) {
+        console.log(`Cliente ${id} sem campo 'vencimento'.`);
+        continue;
+      }
+
+      // Corrigir possíveis erros de formatação (ex.: "23/11/2025'")
+      const dataStr = cliente.vencimento.replace(/[^0-9/]/g, "");
+
+      const [dia, mes, ano] = dataStr.split("/");
+      if (!dia || !mes || !ano) {
+        console.log(`Data inválida para o cliente ${id}:`, cliente.vencimento);
+        continue;
+      }
+
+      const dataVencimento = new Date(ano, mes - 1, dia);
+
+      if (isNaN(dataVencimento.getTime())) {
+        console.log(`Data inválida para o cliente ${id}:`, cliente.vencimento);
+        continue;
+      }
+
+      const diff = Math.ceil((dataVencimento - hoje) / 86400000);
+
+      // ENVIA NOTIFICAÇÃO APENAS SE DIFERENÇA FOR EXATAMENTE 2 DIAS
+      if (diff === 2) {
+
+        const message = {
+          notification: {
+            title: "Cliente vence em 2 dias",
+            body: `O cliente ${id} vence em 2 dias.` // ← pedido por você
+          },
+          tokens: tokens
+        };
+
+        const response = await getMessaging().sendEachForMulticast(message);
+
+        console.log(`✔ Notificação enviada para cliente ID: ${id}`);
+        console.log("✔ Enviadas com sucesso:", response.successCount);
+        console.log("✖ Falharam:", response.failureCount);
+      }
+    }
+
+    console.log("Processo finalizado.");
+  }
+);
