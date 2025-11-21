@@ -227,7 +227,7 @@
 
 
 
-    const db = getDatabase();const { onSchedule } = require("firebase-functions/v2/scheduler");
+    const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { initializeApp } = require("firebase-admin/app");
 const { getDatabase } = require("firebase-admin/database");
 const { getMessaging } = require("firebase-admin/messaging");
@@ -236,7 +236,7 @@ initializeApp();
 
 exports.notificarClientes = onSchedule(
   {
-    schedule: "00 07 * *", // 22:00 todos os dias
+    schedule: "00 07 * * *", // 07:00 todos os dias — CRON CORRETO!
     timeZone: "America/Sao_Paulo"
   },
   async () => {
@@ -272,7 +272,7 @@ exports.notificarClientes = onSchedule(
         continue;
       }
 
-      // Corrigir possíveis erros de formatação (ex.: "23/11/2025'")
+      // Remove caracteres estranhos ("23/11/2025'")
       const dataStr = cliente.vencimento.replace(/[^0-9/]/g, "");
 
       const [dia, mes, ano] = dataStr.split("/");
@@ -290,25 +290,25 @@ exports.notificarClientes = onSchedule(
 
       const diff = Math.ceil((dataVencimento - hoje) / 86400000);
 
-      // ENVIA NOTIFICAÇÃO APENAS SE DIFERENÇA FOR EXATAMENTE 2 DIAS
+      // ENVIA NOTIFICAÇÃO SOMENTE SE ESTIVER FALTANDO 2 DIAS
       if (diff === 2) {
 
         const message = {
           notification: {
             title: "Cliente vence em 2 dias",
-            body: `O cliente ${id} vence em 2 dias.` // ← pedido por você
+            body: `O cliente ${id} vence em 2 dias.` // ← seu pedido
           },
           tokens: tokens
         };
 
         const response = await getMessaging().sendEachForMulticast(message);
 
-        console.log(`✔ Notificação enviada para cliente ID: ${id}`);
-        console.log("✔ Enviadas com sucesso:", response.successCount);
-        console.log("✖ Falharam:", response.failureCount);
+        console.log(`✔ Notificação enviada para ID: ${id}`);
+        console.log("✔ Sucesso:", response.successCount);
+        console.log("✖ Falhas:", response.failureCount);
       }
     }
 
-    console.log("Processo finalizado.");
+    console.log("Processo concluído.");
   }
 );
