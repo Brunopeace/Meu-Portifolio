@@ -225,37 +225,83 @@
 
 
 
-# -----------------------------------------------
-# SCRIPT COMPLETO PARA ATUALIZAR WINDOWS, DRIVERS E PROGRAMAS
-# -----------------------------------------------
+const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { initializeApp } = require("firebase-admin/app");
+const { getDatabase } = require("firebase-admin/database");
+const { getMessaging } = require("firebase-admin/messaging");
 
-Write-Host "=== Iniciando atualização completa do sistema ===" -ForegroundColor Cyan
+initializeApp();
 
-# 1. Atualizar todos os programas via WINGET
-Write-Host "`nAtualizando programas com winget..." -ForegroundColor Yellow
-winget upgrade --all --silent
+exports.notificarClientes = onSchedule(
+  {
+    schedule: "00 07 * * *", // 07:00 todos os dias
+    timeZone: "America/Sao_Paulo"
+  },
+  async () => {
 
-# 2. Instalar módulo PSWindowsUpdate (se não existir)
-Write-Host "`nVerificando módulo PSWindowsUpdate..." -ForegroundColor Yellow
-if (-not (Get-Module -ListAvailable -Name PSWindowsUpdate)) {
-    Install-Module PSWindowsUpdate -Force
-}
+    const db = getDatabase();
 
-Import-Module PSWindowsUpdate
+    // Buscar clientes
+    const clientesSnapshot = await db.ref("clientes").once("value");
+    const clientes = clientesSnapshot.val() || {};
 
-# 3. Procurar atualizações do Windows e drivers
-Write-Host "`nVerificando atualizações do Windows e drivers..." -ForegroundColor Yellow
-Get-WindowsUpdate
+    // Buscar tokens REAIS
+    const devicesSnapshot = await db.ref("devices").once("value");
+    const devices = devicesSnapshot.val() || {};
 
-# 4. Instalar atualizações do Windows e drivers
-Write-Host "`nInstalando atualizações..." -ForegroundColor Yellow
-Install-WindowsUpdate -AcceptAll -AutoReboot
+    // Pega apenas os tokens (não o ID da chave)
+    const tokens = Object.values(devices)
+      .map(device => device.token)
+      .filter(token => !!token);
 
-# 5. Reparos no sistema (DISM + SFC)
-Write-Host "`nExecutando DISM..." -ForegroundColor Yellow
-DISM /Online /Cleanup-Image /RestoreHealth
+    if (tokens.length === 0) {
+      console.log("❌ Nenhum dispositivo registrado.");
+      return;
+    }
 
-Write-Host "`nExecutando SFC..." -ForegroundColor Yellow
-sfc /scannow
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
 
-Write-Host "`n=== FIM: Seu PC está completamente atualizado! ===" -ForegroundColor Green
+    let totalEnviadas = 0;
+
+    for (const id in clientes) {
+
+      const cliente = clientes[id];
+
+      if (!cliente.vencimento) continue;
+
+      // Limpa possíveis caracteres
+      const venc = cliente.vencimento.replace(/[^0-9/]/g, "");
+
+      const [dia, mes, ano] = venc.split("/");
+      if (!dia || !mes || !ano) continue;
+
+      const dataVenc = new Date(ano, mes - 1, dia);
+
+      if (isNaN(dataVenc.getTime())) continue;
+
+      const diff = Math.ceil((dataVenc - hoje) / 86400000);
+
+      // Se faltar exatamente 2 dias
+      if (diff === 2) {
+
+        const message = {
+          notification: {
+            title: "Cliente vence em 2 dias",
+            body: `O cliente ${id} vence em 2 dias.`
+          },
+          tokens: tokens // envia para o celular atual
+        };
+
+        const result = await getMessaging().sendEachForMulticast(message);
+
+        console.log(`✔ Notificação enviada para cliente ${id}.`);
+        console.log(`   Sucesso: ${result.successCount} | Falhas: ${result.failureCount}`);
+
+        totalEnviadas++;
+      }
+    }
+
+    console.log(`📨 TOTAL DE NOTIFICAÇÕES ENVIADAS: ${totalEnviadas}`);
+  }
+);
