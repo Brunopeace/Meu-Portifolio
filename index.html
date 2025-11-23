@@ -234,7 +234,7 @@ initializeApp();
 
 exports.notificarClientes = onSchedule(
   {
-    schedule: "00 07 * * *", // 07:00 todos os dias
+    schedule: "50 17 * * *", // 17:50 todos os dias
     timeZone: "America/Sao_Paulo"
   },
   async () => {
@@ -249,7 +249,7 @@ exports.notificarClientes = onSchedule(
     const devicesSnapshot = await db.ref("devices").once("value");
     const devices = devicesSnapshot.val() || {};
 
-    // Pega apenas os tokens (não o ID da chave)
+    // Pega apenas os tokens válidos
     const tokens = Object.values(devices)
       .map(device => device.token)
       .filter(token => !!token);
@@ -267,17 +267,15 @@ exports.notificarClientes = onSchedule(
     for (const id in clientes) {
 
       const cliente = clientes[id];
-
       if (!cliente.vencimento) continue;
 
-      // Limpa possíveis caracteres
+      // Limpa caracteres indesejados
       const venc = cliente.vencimento.replace(/[^0-9/]/g, "");
 
       const [dia, mes, ano] = venc.split("/");
       if (!dia || !mes || !ano) continue;
 
       const dataVenc = new Date(ano, mes - 1, dia);
-
       if (isNaN(dataVenc.getTime())) continue;
 
       const diff = Math.ceil((dataVenc - hoje) / 86400000);
@@ -287,10 +285,10 @@ exports.notificarClientes = onSchedule(
 
         const message = {
           notification: {
-            title: "Cliente vence em 2 dias",
+            title: `Cliente ${id} vence em 2 dias`, // 🔥 TÍTULO ÚNICO AQUI
             body: `O cliente ${id} vence em 2 dias.`
           },
-          tokens: tokens // envia para o celular atual
+          tokens: tokens
         };
 
         const result = await getMessaging().sendEachForMulticast(message);
