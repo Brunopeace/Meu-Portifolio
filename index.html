@@ -231,7 +231,7 @@ initializeApp();
 
 exports.notificarClientes = onSchedule(
   {
-    schedule: "50 17 * * *", // 17:50 todos os dias
+    schedule: "00 06 * * *", // 06:00 todos os dias
     timeZone: "America/Sao_Paulo"
   },
   async () => {
@@ -283,7 +283,7 @@ exports.notificarClientes = onSchedule(
         const message = {
           notification: {
             title: `Cliente ${id} vence em 2 dias`, // 🔥 TÍTULO ÚNICO AQUI
-            body: `O cliente ${id} vence em 2 dias.`
+            body: `Avise para o cliente ${id} .`
           },
           tokens: tokens
         };
@@ -300,5 +300,3 @@ exports.notificarClientes = onSchedule(
     console.log(`📨 TOTAL DE NOTIFICAÇÕES ENVIADAS: ${totalEnviadas}`);
   }
 );
-
-
